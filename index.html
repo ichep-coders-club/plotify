@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title> comet_g4 plots </title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <script type="text/javascript" src="ManageParameters.js"></script>
+</head>
+
+<body>
+    <div id="header">
+	<table id="header_table">
+	    <tr>
+		<td><h1> Graphite target simulation </h1>   
+		</td><td>
+		    <b> Data by Andy Edmonds 2nd July 2013</b><br/>
+		    <b> Plots by Ben Krikler </b><br/>
+		</td><td>
+		<a  href="BKrikler_20130703_graphite_target_analysis.tar.gz">Download all plots as a gzip</a>
+		</td>
+	</tr>
+    </table>
+    </div>
+    <div id="container">
+	<div id="center" class="column">
+	    <div  class="column">
+		<h1>Plots</h1>
+		<table class="plots">
+		    <tr>
+			<td>
+			    <div id="information" >
+			    <h3> Simulation details: </h3>
+			    <p>
+			    <b>Number of protons:</b> 1,000,000
+			    </p><p>
+			    <b>Pion production target material:</b> Graphite
+			    </p><p>
+			    <b>Hardonisation model:</b> QGSP_BERT
+			    </p><p>
+			    <b>Software:</b> comet_g4 + local revisions by Andy.
+			    </p>
+			    <h3> Plots: </h3>
+			    <p>
+			    <b>Top Left:</b> Total momentum of different particles
+			    </p><p>
+			    <b>Top Right:</b> Arrival times of different particles
+			    </p><p>
+			    <b>Bottom Left:</b> Longitudinal Vs. Transverse momentum for a given particle species
+			    </p><p>
+			    <b>Bottom Centre:</b> Y position Vs. Total momentum for a given particle species
+			    </p><p>
+			    <b>Bottom Right:</b> Beam profile for a given particle species
+			    </p>
+
+			    <div>
+			</td>
+			<td id="momentum">
+			    <a id="momentum_pic_eps" > <img class="big" id="momentum_pic" alt="momentum of all particles"/></a>
+			</td>
+			<td id="time">
+			    <a id="time_pic_eps" > <img class="big" id="time_pic" alt="time of all particles"/></a>
+			</td>
+		    </tr>
+			<td id="mom2d">
+			    <a id="mom2d_pic_eps" > <img class="big" id="mom2d_pic" alt="mom2d of particles"/></a>
+			</td>
+			<td id="dispersion">
+			    <a id="dispersion_pic_eps" > <img class="big" id="dispersion_pic" alt="dispersion of particles"/></a>
+			</td>
+			<td id="profile">
+			    <a id="profile_pic_eps" > <img class="big" id="profile_pic" alt="profile of particles"/></a>
+			</td>
+		    <tr>
+		    </tr>
+		    <tr>
+		    </tr>
+		</table>
+		<div id="numbers">
+		    <h1> Numbers </h1>
+		    <iframe id="summary_numbers">
+		    </iframe>
+		</div>
+	    </div>
+	</div>
+
+	<div id="left" class="column">
+	    <div id="parameter_block" >
+		<h1> Parameters </h1>
+		<!--JAVASCRIPT WILL INSERT PARAMETERS HERE -->
+	    </div>
+	</div>
+    </div>
+    <div id="footer">
+	Ben Krikler, Imperial College London<br/>
+    </div>
+</body>
+</html>
+<script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		  ga('create', 'UA-42231296-1', 'ic.ac.uk');
+		    ga('send', 'pageview');
+
+		</script>
