@@ -3,15 +3,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title> comet_g4 plots </title>
+    <title> Title </title>
     <link rel="stylesheet" type="text/css" href="style_2.css" />
     <script type="text/javascript" src="Plotify.js"></script>
     <script style="text/javascript">
-	length=new Parameter('length',Array('15','30','60','80'),Array('length-15cm_radius-6mm','length-30cm_radius-6mm','length-60cm_radius-6mm','length-80cm_radius-6mm'));
-	place=new Parameter('place',Array('. Bent Solenoid Entry', '. Before Stopping Target','. CDC cylinder', '. CDC exit'),Array('ptacs_exit','ts2_tgt','cdc_pre','ts2_1'));
-	particle=new Parameter('particle',Array('All','Other','mu-','mu+','pi-','pi+','e-','e+','K-','K+','n','p','He-3','H-3','H-2','gamma'),Array('all','remainder','mu_n','mu_p','pi_n','pi_p','e_n','e_p','K_n','K_p','n','p','He3','H3','H2','gamma'));
+	// Instantiate Parameters.  Format is: 
+	aParam=new Parameter('aParam',Array('display','names'),Array('filename','segments'));
 
-	momentum=new Image("momentum","Momentum of all particles",Array("plots/",length,"/mom/",place,"_all"),"png","eps");
+	// Instantiate Images. Format is:
+	anImage=new Image("anImage","mouseover and alt text",Array("strings_and_",parameters,"to/define_path_to/",image),"display_extension","download_extension");
     </script>
 </head>
 
@@ -19,12 +19,12 @@
     <div id="header">
 	<table id="header_table">
 	    <tr>
-		<td><h1> Graphite target simulation </h1>   
+		<td><h1> Title for the page </h1>   
 		</td><td>
-		    <b> Data by Andy Edmonds 2nd July 2013</b><br/>
-		    <b> Plots by Ben Krikler </b><br/>
+		    <b> Plots by Your Name </b><br/>
+		    <b> Other relavant citation</b><br/>
 		</td><td>
-		<a  href="BKrikler_20130703_graphite_target_analysis.tar.gz">Download all plots as a gzip</a>
+		<a  href="all_results.tar.gz">Maybe use this link to download everything as a TarBall?</a>
 		</td>
 	</tr>
     </table>
@@ -38,39 +38,36 @@
 			<td>
 			    <div id="information" >
 			    <h3> Simulation details: </h3>
-			    <p>
-			    <b>Number of protons:</b> 1,000,000
-			    </p><p>
-			    <b>Pion production target material:</b> Graphite
-			    </p><p>
-			    <b>Hardonisation model:</b> QGSP_BERT
-			    </p><p>
-			    <b>Software:</b> comet_g4 + local revisions by Andy.
-			    </p>
-			    <h3> Plots: </h3>
-			    <p>
-			    <b>Top Left:</b> Total momentum of different particles
-			    </p><p>
-			    <b>Top Right:</b> Arrival times of different particles
-			    </p><p>
-			    <b>Bottom Left:</b> Longitudinal Vs. Transverse momentum for a given particle species
-			    </p><p>
-			    <b>Bottom Centre:</b> Y position Vs. Total momentum for a given particle species
-			    </p><p>
-			    <b>Bottom Right:</b> Beam profile for a given particle species
-			    </p>
+			    <ul>
+				<li>
+				<b>Detail:</b> Graphite
+				</li><li>
+				<b>Software used:</b> 
+				</li>
+			    </ul>
+
+			    <h3> Plot details: </h3>
+			    <ul>
+				<li>
+				<b>Top Right:</b> Arrival times of different particles
+				</li><li>
+				<b>Bottom Left:</b> Longitudinal Vs. Transverse momentum for a given particle species
+				</li><li>
+				<b>Bottom Right:</b> Beam profile for a given particle species
+				</li>
+			    </ul>
 
 			    <div>
 			</td>
-			<td id="momentum">
+			<td id="plot_one">
 			    <script style="text/javascript">
-				momentum.writeHtml("big");
+				plot_one.writeHtml("big");
 			    </script>
 			</td>
-			<td id="time">
+			<td id="plot_two">
 			    <script style="text/javascript">
-				time=new Image("time","Arrival time of all particles",Array("plots/",length,"/time/",place,"_all"),"png","eps");
-				time.writeHtml("big");
+				plot_two=new Image("plot_two","Descriptive text",Array("plots/",aParam,"/plot_two/",aParam,"_all"),"png","eps");
+				plot_two.writeHtml();
 			    </script>
 			</td>
 		    </tr>
@@ -88,11 +85,6 @@
 		    <tr>
 		    </tr>
 		</table>
-		<div id="numbers">
-		    <h1> Numbers </h1>
-		    <iframe id="summary_numbers">
-		    </iframe>
-		</div>
 	    </div>
 	</div>
 
