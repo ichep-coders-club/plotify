@@ -100,7 +100,7 @@ function Parameter(name,values,filenames){
 	this.CurrentVal=startup;
 
 	// Create html for the table
-	var html="<table class='parameter_table' id='tab_"+this.Name+"'>";
+	var html="<table class='value_table' id='tab_"+this.Name+"'>";
 	for(i=0;i<this.Values.length;){
 	    html=html.concat("<tr>");
 	    for(var j=0;j<columns;j++){
