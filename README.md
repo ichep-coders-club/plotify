@@ -70,8 +70,7 @@ Recipe to create a page
 6. Create the Html for all Images (using Image's writeHtml method)
 7. Adapt the css styles for the parameters (classes: value, current_value) and for the images (classes: plot if default value used).
 
-The writeHtml methods (steps 4 and 6) do not need to be called immediately after the instantiation of an Image or Parameter in the code.  They can even be placed in separate <script> tags under the div itself if you think it's easier to read the html code.
-
+The writeHtml methods (steps 4 and 6) can only be used once the div that contains them has been created.  A simple way to do this is to place the writeHtml inside a pair of script tags within the div itself.  This should also make the original html more readable. An alternative is to group all writeHtml calls (and possibly even the Image and Parameter instantiations) at the bottom of the wepage.
 Notes
 =====
 1. All images use relative links to find the image source.
