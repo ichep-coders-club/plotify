@@ -58,13 +58,18 @@ function Image(name,alt,parameter_dependency,display_extension,download_extensio
 	// Convert the dependency array to a string (uses the overriden toString method in the Parameter class)
 	var filename=this.Dependencies.join("");
 
-	document.getElementById(this.DisplayID).setAttribute('src',filename+"."+this.DisplayExt);
+	var section=document.getElementById(this.DisplayID)
+	if(!section) {
+	    alert("Unable to find image html for image: "+ this.Name+ "\rPerhaps you haven't called writeHtml on this image");
+	    return;
+	}
+	section.setAttribute('src',filename+"."+this.DisplayExt);
 	document.getElementById(this.DownloadID).setAttribute('href',filename+"."+this.DownloadExt);
     }
 
     //----------------- Register this image -----------------//
     // Register image with the controllable elements list so that it's informed when the parameters are changed
-    ControllableElements.addImage(this);
+    ControllableElements.addElement(this);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -168,22 +173,24 @@ Parameter.prototype.toString=function(){
 // Object to control a register of the controllable elements (images, tables, etc etc), that depend on the parameters.
 // Any time a parameter has its value changed, the parameter tells this object to update all images with the new value.
 ControllableElements = new function(){
-    //Set up list of all images to loop over when a parameter is changed
-    this.ImageList=new Array();
+    // List of all images to loop over when a parameter is changed
+    this.ElementList=new Array();
 
     // extend image list
-    this.addImage=function(image){
-	this.ImageList.push(image);
+    this.addElement=function(element){
+	this.ElementList.push(element);
     }
 
     // Function to alert all elements that a parameter has changed
     this.updateControllables=function(ChangedParam){
 	// Loop over all images and tell them to update
-	for(i=0;i<this.ImageList.length;i++){
-	    this.ImageList[i].update(ChangedParam);
+	for(i=0;i<this.ElementList.length;i++){
+	    this.ElementList[i].update(ChangedParam);
 	}
     }
 }
 
-window.onload=ControllableElements.updateControllables();
+window.onload=function(){
+    ControllableElements.updateControllables();
+}
 // -->
