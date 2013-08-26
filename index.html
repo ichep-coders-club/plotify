@@ -4,8 +4,15 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title> comet_g4 plots </title>
-    <link rel="stylesheet" type="text/css" href="style.css" />
-    <script type="text/javascript" src="ManageParameters.js"></script>
+    <link rel="stylesheet" type="text/css" href="style_2.css" />
+    <script type="text/javascript" src="Plotify.js"></script>
+    <script style="text/javascript">
+	length=new Parameter('length',Array('15','30','60','80'),Array('length-15cm_radius-6mm','length-30cm_radius-6mm','length-60cm_radius-6mm','length-80cm_radius-6mm'));
+	place=new Parameter('place',Array('. Bent Solenoid Entry', '. Before Stopping Target','. CDC cylinder', '. CDC exit'),Array('ptacs_exit','ts2_tgt','cdc_pre','ts2_1'));
+	particle=new Parameter('particle',Array('All','Other','mu-','mu+','pi-','pi+','e-','e+','K-','K+','n','p','He-3','H-3','H-2','gamma'),Array('all','remainder','mu_n','mu_p','pi_n','pi_p','e_n','e_p','K_n','K_p','n','p','He3','H3','H2','gamma'));
+
+	momentum=new Image("momentum","Momentum of all particles",Array("plots/",length,"/mom/",place,"_all"),"png","eps");
+    </script>
 </head>
 
 <body>
@@ -56,12 +63,18 @@
 			    <div>
 			</td>
 			<td id="momentum">
-			    <a id="momentum_pic_eps" > <img class="big" id="momentum_pic" alt="momentum of all particles"/></a>
+			    <script style="text/javascript">
+				momentum.writeHtml("big");
+			    </script>
 			</td>
 			<td id="time">
-			    <a id="time_pic_eps" > <img class="big" id="time_pic" alt="time of all particles"/></a>
+			    <script style="text/javascript">
+				time=new Image("time","Arrival time of all particles",Array("plots/",length,"/time/",place,"_all"),"png","eps");
+				time.writeHtml("big");
+			    </script>
 			</td>
 		    </tr>
+		    <tr>
 			<td id="mom2d">
 			    <a id="mom2d_pic_eps" > <img class="big" id="mom2d_pic" alt="mom2d of particles"/></a>
 			</td>
@@ -71,7 +84,6 @@
 			<td id="profile">
 			    <a id="profile_pic_eps" > <img class="big" id="profile_pic" alt="profile of particles"/></a>
 			</td>
-		    <tr>
 		    </tr>
 		    <tr>
 		    </tr>
@@ -87,22 +99,23 @@
 	<div id="left" class="column">
 	    <div id="parameter_block" >
 		<h1> Parameters </h1>
-		<!--JAVASCRIPT WILL INSERT PARAMETERS HERE -->
+		<div class=parameter id='length'>
+		    <h1> Length (cm) </h1>
+		    <script style='text/javascript'> length.writeHtml(3,4)</script>
+		</div>
+		<div class=parameter id='place'>
+		    <h1> Length (cm) </h1>
+		    <script style='text/javascript'> place.writeHtml(0,1)</script>
+		</div>
+		<div class=parameter id='particle'> 
+		    <h1> Length (cm) </h1>
+		    <script style='text/javascript'> particle.writeHtml(0,2)</script>
+		</div>
+		</div>
 	    </div>
 	</div>
-    </div>
-    <div id="footer">
-	Ben Krikler, Imperial College London<br/>
-    </div>
-</body>
+	<div id="footer">
+	    Ben Krikler, Imperial College London<br/>
+	</div>
+    </body>
 </html>
-<script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-		  ga('create', 'UA-42231296-1', 'ic.ac.uk');
-		    ga('send', 'pageview');
-
-		</script>

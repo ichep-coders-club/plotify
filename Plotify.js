@@ -1,0 +1,179 @@
+<!--
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+// 
+// Image class
+// 
+////////////////////////////////////////////////////////////////////////////////////////////////
+function Image(name,title,parameter_dependency,display_extension,download_extension){
+    //----------------- Data members -----------------//
+    this.Name=name;
+    this.Title=title;
+    this.Dependencies=parameter_dependency;
+    this.DisplayExt=display_extension;
+    this.DownloadExt=download_extension;
+
+    this.DisplayID=this.Name+"_pic";
+    this.DownloadID=this.Name+"_file";
+
+    //----------------- writeHtml method -----------------//
+    // function to write the Html code for the image
+    this.writeHtml=function(cssClass,DivID){
+	var html="<a id="+this.DownloadID+" >\n";
+	if(cssClass) html+=" <img class="+cssClass;
+	else html+=" <img class=plot";
+	html+=" id="+this.DisplayID;
+	html+=" alt="+this.Title+"/>";
+	html+="</a>";
+
+	// Define the target for the parameter table.
+	// If DivID is supplied, use that, else use the parameter's name as the ID of the block.
+	target_div=typeof DivID !=='undefined' ? DivID: this.Name;
+
+	// Place html for the parameter table into the parameter's div
+	var section=document.getElementById(target_div);
+	if(!section) {
+	    alert("Unable to find div with ID:"+ target_div+ " in Image.writeHtml")
+		return;
+	}
+	section.innerHTML+=html;
+
+	this.update()
+    }
+
+    //----------------- update method -----------------//
+    // function to update the image
+    this.update=function(ChangedParam){
+	// Check image depends on the parameter (to avoid downloading a new copy of the same image)
+	if(ChangedParam && this.Dependencies.indexOf(ChangedParam)==-1) return;
+
+	// Convert the dependency array to a string (uses the overriden toString method in the Parameter class)
+	var filename=this.Dependencies.join("");
+
+	document.getElementById(this.DisplayID).setAttribute('src',filename+"."+this.DisplayExt);
+	document.getElementById(this.DownloadID).setAttribute('href',filename+"."+this.DownloadExt);
+    }
+
+    //----------------- Register this image -----------------//
+    // Register image with the controllable elements list so that it's informed when the parameters are changed
+    ControllableElements.addImage(this);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+// 
+// Controllable Element List
+// 
+////////////////////////////////////////////////////////////////////////////////////////////////
+ControllableElements = new function(){
+    //Set up list of all images to loop over when a parameter is changed
+    this.ImageList=new Array();
+
+    // extend image list
+    this.addImage=function(image){
+	this.ImageList.push(image);
+    }
+
+    // Function to alert all elements that a parameter has changed
+    this.updateControllables=function(ChangedParam){
+	// Loop over all images and tell them to update
+	for(i=0;i<this.ImageList.length;i++){
+	    this.ImageList[i].update(ChangedParam);
+	}
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+// 
+// Parameter class
+// 
+////////////////////////////////////////////////////////////////////////////////////////////////
+function Parameter(name,values,filenames){
+// name (string): The name of the parameter which is used in html tag IDs.
+// values (Array of strings): The possible values of the parameter as to be displayed on the webpage
+// filenames (Array of strings): An array that corresponds to 'values' array and provides the 
+//                               component for the filename for a given parameter value
+
+    //----------------- Data members -----------------//
+    this.name=name;
+    this.values=values.slice(0);
+    this.filenames=filenames.slice(0);
+    this.currentVal=0;
+
+    //----------------- writeHtml -----------------//
+    // Create the html code for the Parameter
+    this.writeHtml=function(startup,columns,divID){
+    // startup (integer): An integer giving the index of the startup value for the parameter.
+    //                    Must be in the range [0,values.length[
+    // columns (integer): An integer specifying the number of columns to use in the parameter value table.
+    // divID [optional]: The ID of the div block that should contain the parameter.  
+    //                    If not supplied, the parameter's name (this.name) is used instead.
+	this.currentVal=startup;
+
+	// Create html for the table
+	var html="<table class='parameter_table' id='tab_"+this.name+"'>";
+	for(i=0;i<this.values.length;){
+	    html=html.concat("<tr>");
+	    for(var j=0;j<columns;j++){
+		html=html.concat("<td>");
+		html=html.concat("<a id="+this.getValueID(i)+" href=javascript:"+this.name+".changeValue("+i+")> "+this.values[i]+" </a>");
+		html=html.concat("</td>");
+		i++; //Increment parameter counter as we've added another value
+		if(i>this.values.length) break; // Not all rows may be complete
+	    }
+	    html=html.concat("</tr>");
+	}
+	html=html.concat("</table>");
+
+	// Define the target for the parameter table.
+	// If divID is supplied, use that, else use the parameter's name as the ID of the block.
+	target_div=typeof divID !=='undefined' ? divID: this.name;
+
+	// Place html for the parameter table into the parameter's div
+	var section=document.getElementById(target_div);
+	section.innerHTML+=html;
+
+	//Set the link styles
+	this.setLinks()
+    }
+
+    //----------------- changeValue -----------------//
+    // This function is used as the href target for the parameter value links
+    this.changeValue=function(newVal){
+	this.currentVal=newVal;
+	this.setLinks();
+	ControllableElements.updateControllables(this);
+    }
+
+    //----------------- setLinks -----------------//
+    // Function to set the style of the parameter values 
+    // Called when the link is clicked
+    this.setLinks=function(){
+	for(var i=0;i<this.values.length;i++){
+	    if(i==this.currentVal){
+		document.getElementById(this.getValueID(i)).setAttribute('class','current_value');
+	    }else{
+		document.getElementById(this.getValueID(i)).setAttribute('class','value');
+	    }
+	}
+    }
+
+    //----------------- getValueID -----------------//
+    //Helper function to produce the id for the requested cell in the parameter table
+    this.getValueID=function(index){
+	return this.name+"_"+index;
+    }
+}
+
+//----------------- toString -----------------//
+// Override the default toString function to return the current value of the parameter
+Parameter.prototype.toString=function(){
+    //return (this.name+"_"+this.filenames[this.currentVal]);
+    return (this.filenames[this.currentVal]);
+}
+
+function Startup(){
+//    SetFilter();
+}
+
+window.onload=Startup;
+// -->
