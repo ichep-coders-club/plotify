@@ -14,10 +14,16 @@ On the whole I've tried to keep the code as simple as possible and have tried to
 For instance, the Parameter class does not request a title.  Writing and placing the html code for a title is left to the user to arrange as desired.
 I hope that this provides both flexibilty, and easier to read Html.
 
+Authors 
+-------
+Ben Krikler
+
+There should probably be some sort of open source license on this, but for now just give us a mention when (if) you use this, put a citation at the bottom of the webpage or something to that effect.
+
 Usage
 -----
 The aim in writing this code was to make it as easy as possible to use.
-To that end, there are only four javascript functions needed to create the web-page:
+To that end, there are only four javascript functions needed to create the functionality described above:
 1. A Parameter constructor
 2. A method to create and place the html for a Parameter
 3. An Image constructor
