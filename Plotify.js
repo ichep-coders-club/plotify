@@ -30,11 +30,12 @@ function Image(name,alt,parameter_dependency,display_extension,download_extensio
     // Function to write the Html code for the image
     this.writeHtml=function(cssClass,DivID){
 	var html="<a id="+this.DownloadID+" >\n";
-	if(cssClass) html+=" <img class="+cssClass;
-	else html+=" <img class=plot";
-	html+=" id="+this.DisplayID;
-	html+=" alt="+this.Title+"/>";
-	html+="</a>";
+	if(cssClass) html+=" <img class='"+cssClass+"'";
+	else html+=" <img class='plot'";
+	html+=" id='"+this.DisplayID+"'";
+	html+=" alt='"+this.Title+"'";
+	html+=" title='"+this.Title+"'";
+	html+="/></a>";
 
 	// Define the target for the parameter table.
 	// If DivID is supplied, use that, else use the parameter's name as the ID of the block.
