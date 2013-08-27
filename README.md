@@ -24,16 +24,19 @@ Usage
 -----
 The aim in writing this code was to make it as easy as possible to use.
 To that end, there are only four javascript functions needed to create the functionality described above:
+
 1. A Parameter constructor
 2. A method to create and place the html for a Parameter
 3. An Image constructor
 4. A method to create and place the html for an Image
 
-### Add a Parameter
+### 1) Add a Parameter
 Each parameter is list of values and corresponding segments of the filename.
 To create a parameter:
-1) Create an instance of the Parameter class.
-2) Call writeHtml() on that instance.
+
+1. Create an instance of the Parameter class.
+2. Call writeHtml() on that instance.
+
 For example:
 
 ```javascript
@@ -46,7 +49,7 @@ The value table is drawn with 2 columns as specified by the second parameter.
 An optional third argument could be used to specify the ID of the target div that should contain the value table.
 If this is not supplied, the name of the parameter is used as the target div's ID, so in the above example, the html would be placed in the div whose ID is 'aParam'.
 
-### Add an Image
+### 2) Add an Image
 An image is added similarly to a Parameter, by creating an instance of the Image, and then calling writeHtml() on it.
 For example:
 
@@ -60,7 +63,7 @@ The third parameter is perhaps the most crucial.  It tells the Image how to prod
 Lastly, the writeHtml function is called.  The first parameter provides the abiltiy to override the default img class.  Because the string passed in is empty however, the img tags class will be "plot".  The last argument provides the ID of the div that should be used and is optional in the same way as for the Parameter Class' writeHTML.
 
 Recipe to create a page
-=======================
+-----------------------
 1. Produce your plots and analyses and make sure they are stored in a logical way, using the same string to represent each value of a parameter. 
    (Personally, I prefer creating a directory for the full set of parameters using the values separated with underscores. I then put all the various plots for a given set of values in the corresponding directory.)
 2. Create the layout of the webpage using normal html, creating a div for each parameter to be added.
