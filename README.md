@@ -20,6 +20,13 @@ Ben Krikler
 
 There should probably be some sort of open source license on this, but for now just give us a mention when (if) you use this, put a citation at the bottom of the webpage or something to that effect.
 
+HTML, css and javascript
+------------------------
+
+For those unfamiliar with the HTML, css and javascript, you may want consult [this website](http://www.w3schools.com) 
+for tutorials and explanation. 
+
+
 Usage
 -----
 The aim in writing this code was to make it as easy as possible to use.
