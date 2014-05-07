@@ -99,28 +99,24 @@ function Parameter(name,values,filenames){
 
     //----------------- writeHtml -----------------//
     // Create the html code for the Parameter
-    this.writeHtml=function(startup,columns,divID){
+    this.writeHtml=function(startup,columns,divID,type){
         // startup (integer): An integer giving the index of the startup value for the parameter.
         //                    Must be in the range [0,values.length[
         // columns (integer): An integer specifying the number of columns to use in the parameter value table.
         // divID [optional]: The ID of the div block that should contain the parameter.  
-        //                    If not supplied, the parameter's name (this.Name) is used instead.
+        //                   If not supplied, the parameter's name (this.Name) is used instead.
+        // type (string) [optional]: what sort of Html should be written.  If
+        //                           left blank a series of links are placed in
+        //                           a table.  Values are: table, select
         this.CurrentVal=startup;
 
         // Create html for the table
-        var html="<table class='value_table' id='tab_"+this.Name+"'>";
-        for(i=0;i<this.Values.length;){
-            html=html.concat("<tr>");
-            for(var j=0;j<columns;j++){
-                html=html.concat("<td>");
-                html=html.concat("<a id="+this.getValueID(i)+" href=javascript:"+this.Name+".changeValue("+i+")> "+this.Values[i]+" </a>");
-                html=html.concat("</td>");
-                i++; //Increment parameter counter as we've added another value
-                if(i>this.Values.length) break; // Not all rows may be complete
-            }
-            html=html.concat("</tr>");
+        var html=""
+        if(type=="table" || !type ){
+            html=this.makeHtmlTable(columns);
+        }else if (type =="select"){
+            html=this.makeHtmlSelect(columns);
         }
-        html=html.concat("</table>");
 
         // Define the target for the parameter table.
         // If divID is supplied, use that, else use the parameter's name as the ID of the block.
@@ -138,9 +134,42 @@ function Parameter(name,values,filenames){
         this.setLinks()
     }
 
+    //----------------- makeHtmlTable method -----------------//
+    // Function to make the Html code for the parameter as a table of links
+    this.makeHtmlTable=function(columns){
+        var html= "<table class='value_table' id='tab_"+this.Name+"'>";
+        for(i=0;i<this.Values.length;){
+            html=html.concat("<tr>");
+            for(var j=0;j<columns;j++){
+                html=html.concat("<td>");
+                html=html.concat("<a id="+this.getValueID(i)+" href=javascript:"+this.Name+".changeValue("+i+")> "+this.Values[i]+" </a>");
+                html=html.concat("</td>");
+                i++; //Increment parameter counter as we've added another value
+                if(i>this.Values.length) break; // Not all rows may be complete
+            }
+            html=html.concat("</tr>");
+        }
+        html=html.concat("</table>");
+        return html;
+    }
+
+    //----------------- makeHtmlSelect method -----------------//
+    // Function to make the Html code for the parameter as a select list
+    this.makeHtmlSelect=function(columns){
+        var tag_id="'select_"+this.Name+"'";
+        var html= "<select class='value_select' id="+tag_id+" onchange=\"ParamSelectValue("+this.Name+","+tag_id+")\">";
+        for(i=0;i<this.Values.length;i++){
+            html=html.concat("<option id="+this.getValueID(i)+" value="+this.Values[i]+"> "+this.Values[i]+" </options>");
+        }
+        html=html.concat("</select>");
+        return html;
+    }
+
+
     //----------------- changeValue -----------------//
     // This function is used as the href target for the parameter value links
     this.changeValue=function(newVal){
+        if(newVal==-1) return;
         this.CurrentVal=newVal;
         this.setLinks();
         ControllableElements.updateControllables(this);
@@ -168,7 +197,7 @@ function Parameter(name,values,filenames){
     //----------------- getIndexOfValue -----------------//
     //Helper function to produce the id for the requested cell in the parameter table
     this.getIndexOfValue=function(value){
-        return this.Filenames.indexOf(value);
+        return this.Filenames.indexOf(parseFloat(value));
     }
 
     //----------------- Register this parameter -----------------//
@@ -247,6 +276,17 @@ function ProcessUserOptions(){
             alert("Parameter '"+input[0]+"' not found.");
         }
     }
+}
+
+function ParamSelectValue(parameter,id){
+        var section=document.getElementById(id);
+        if(!section) {
+                alert("Unable to find div with ID:"+ id+ " in ParamSelectValue")
+                        return;
+        }
+        var newVal=section.options[section.selectedIndex].value;
+        newVal=parameter.getIndexOfValue(newVal);
+        parameter.changeValue(newVal);
 }
 
 window.onload=function(){
