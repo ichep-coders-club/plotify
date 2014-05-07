@@ -25,16 +25,23 @@ function Image(name,alt,parameter_dependency,display_extension,download_extensio
     this.DisplayID=this.Name+"_pic";
     this.DownloadID=this.Name+"_file";
 
-    //----------------- writeHtml method -----------------//
-    // Function to write the Html code for the image
-    this.writeHtml=function(cssClass,DivID){
-        var html="<a id="+this.DownloadID+" >\n";
+    //----------------- makeHtml method -----------------//
+    // Function to make the Html code for the image
+    this.makeHtml=function(cssClass){
+        var html="<a id="+this.DownloadID+" target='_blank'>\n";
         if(cssClass) html+=" <img class='"+cssClass+"'";
         else html+=" <img class='plot'";
         html+=" id='"+this.DisplayID+"'";
         html+=" alt='"+this.Title+"'";
         html+=" title='"+this.Title+"'";
         html+="/></a>";
+        return html;
+    }
+
+    //----------------- writeHtml method -----------------//
+    // Function to write the Html code for the image
+    this.writeHtml=function(cssClass,DivID){
+        var html=this.makeHtml(cssClass);
 
         // Define the target for the parameter table.
         // If DivID is supplied, use that, else use the parameter's name as the ID of the block.
@@ -60,7 +67,7 @@ function Image(name,alt,parameter_dependency,display_extension,download_extensio
 
         var section=document.getElementById(this.DisplayID)
             if(!section) {
-                alert("Unable to find image html for image: "+ this.Name+ "\rPerhaps you haven't called writeHtml on this image");
+                //alert("Unable to find image html for image: "+ this.Name+ "\rPerhaps you haven't called writeHtml on this image");
                 return;
             }
         section.setAttribute('src',filename+"."+this.DisplayExt);
@@ -86,7 +93,8 @@ function Parameter(name,values,filenames){
     //----------------- Data members -----------------//
     this.Name=name;
     this.Values=values.slice(0);
-    this.Filenames=filenames.slice(0);
+    if(filenames) this.Filenames=filenames.slice(0);
+    else this.Filenames=values.slice(0);
     this.CurrentVal=0;
 
     //----------------- writeHtml -----------------//
@@ -202,6 +210,16 @@ ParameterList=new Object();
             for(i=0;i<this.ElementList.length;i++){
                 this.ElementList[i].update(ChangedParam);
             }
+        }
+
+        // Function to obtain a given image
+        this.findElement=function(name){
+            for(var i in this.ElementList){
+                if(this.ElementList[i].Name==name){
+                    return this.ElementList[i];
+                }
+            }
+            return null;
         }
     }
 
