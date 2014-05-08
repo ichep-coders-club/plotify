@@ -96,6 +96,7 @@ function Parameter(name,values,filenames){
     if(filenames) this.Filenames=filenames.slice(0);
     else this.Filenames=values.slice(0);
     this.CurrentVal=0;
+    this.Type="";
 
     //----------------- writeHtml -----------------//
     // Create the html code for the Parameter
@@ -109,12 +110,13 @@ function Parameter(name,values,filenames){
         //                           left blank a series of links are placed in
         //                           a table.  Values are: table, select
         this.CurrentVal=startup;
+        this.Type=type;
 
         // Create html for the table
         var html=""
-        if(type=="table" || !type ){
+        if(this.Type=="table" || !this.Type ){
             html=this.makeHtmlTable(columns);
-        }else if (type =="select"){
+        }else if (this.Type =="select"){
             html=this.makeHtmlSelect(columns);
         }
 
@@ -156,15 +158,15 @@ function Parameter(name,values,filenames){
     //----------------- makeHtmlSelect method -----------------//
     // Function to make the Html code for the parameter as a select list
     this.makeHtmlSelect=function(columns){
-        var tag_id="'select_"+this.Name+"'";
-        var html= "<select class='value_select' id="+tag_id+" onchange=\"ParamSelectValue("+this.Name+","+tag_id+")\">";
+        var tag_id="select_"+this.Name;
+        this.TagId=tag_id;
+        var html= "<select class='value_select' id='"+tag_id+"' onchange=\"ParamSelectValue("+this.Name+",'"+tag_id+"')\">";
         for(i=0;i<this.Values.length;i++){
-            html=html.concat("<option id="+this.getValueID(i)+" value="+this.Values[i]+"> "+this.Values[i]+" </options>");
+            html=html.concat("<option id="+this.getValueID(i)+" value="+i+"> "+this.Values[i]+" </options>");
         }
         html=html.concat("</select>");
         return html;
     }
-
 
     //----------------- changeValue -----------------//
     // This function is used as the href target for the parameter value links
@@ -172,7 +174,72 @@ function Parameter(name,values,filenames){
         if(newVal==-1) return;
         this.CurrentVal=newVal;
         this.setLinks();
+        if(this.Type=="select") this.updateSelectBox();
         ControllableElements.updateControllables(this);
+    }
+
+    //----------------- incrementValue -----------------//
+    // This function allows us to step through the values of this parameter easily
+    this.addToValue=function(step){
+        if(!step) step=1;
+        var newVal=this.Values.length + this.CurrentVal+step;
+        newVal=newVal%this.Values.length;
+        this.changeValue(newVal);
+    }
+
+    //----------------- makeCycleButton method -----------------//
+    // Function to make the Html code for a button that toggles cycling of
+    // values
+    this.makeCycleButton=function(target_div,period){
+        //var html="<div ";
+        //html+="id='button_"+this.Name+"'";
+        //html+="class=play_button ";
+        //html+="title='start/stop cycling through each value' ";
+        //html+="onclick='"+this.Name+".toggleCycling("+period+")'";
+        //html+="</div>";
+        var html="<button ";
+        html+="onclick='"+this.Name+".toggleCycling("+period+")' ";
+        html+="id='button_"+this.Name+"'>Start Loop</button>";
+
+        // Place html for the parameter table into the parameter's div
+        var section=document.getElementById(target_div);
+        if(!section) {
+            alert("Unable to find div with ID:"+ target_div+ " in Image.writeHtml")
+                return;
+        }
+        section.innerHTML+=html;
+    }
+
+    //----------------- toggleCycling -----------------//
+    // Begin/end a loop over the values of this parameter
+    this.toggleCycling=function(period){
+            // do we start or stop cycling?
+            var button=document.getElementById("button_"+this.Name);
+            var startText="Start Loop";
+            var stopText="Stop Loop";
+            if(button.innerHTML==startText){
+                    button.innerHTML=stopText;
+            //if(button.getAttribute("class")=="play_button"){
+            //        button.setAttribute("class","stop_button");
+                    this.startCycling(period);
+            } else if(button.innerHTML==stopText){
+                    button.innerHTML=startText;
+            //}else if(button.getAttribute("class")=="stop_button"){
+            //        button.setAttribute("class","play_button");
+                    this.stopCycling();
+            }
+    }
+
+    //----------------- startCycling -----------------//
+    // Begin a loop over the values of this parameter
+    this.startCycling=function(period){
+            this.LoopTimer=setInterval(this.Name+".addToValue(1)",period);
+    }
+
+    //----------------- startCycling -----------------//
+    // Begin a loop over the values of this parameter
+    this.stopCycling=function(){
+            clearInterval(this.LoopTimer);
     }
 
     //----------------- setLinks -----------------//
@@ -186,6 +253,12 @@ function Parameter(name,values,filenames){
                 document.getElementById(this.getValueID(i)).setAttribute('class','value');
             }
         }
+    }
+
+    //----------------- updateSelectBox -----------------//
+    // Function to set value of the select in case it was changed indirectly
+    this.updateSelectBox=function(){
+        document.getElementById(this.TagId).value=this.CurrentVal;
     }
 
     //----------------- getValueID -----------------//
