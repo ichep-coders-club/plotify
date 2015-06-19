@@ -15,7 +15,7 @@ function Image(name,alt,parameter_dependency,display_extension,download_extensio
 // display_extension (string): File extension of the images on the webpage
 // download_extension [optional] (string): File extension of the images that download when clicked. 
 //          If ommitted, the value of 'display_extension' is used.
-    //----------------- Data members -----------------//
+    //---------------- Data members -----------------//
     this.Name=name;
     this.Title=alt;
     this.Dependencies=parameter_dependency;
@@ -197,9 +197,14 @@ function Parameter(name,values,filenames){
         //html+="title='start/stop cycling through each value' ";
         //html+="onclick='"+this.Name+".toggleCycling("+period+")'";
         //html+="</div>";
-        var html="<button ";
-        html+="onclick='"+this.Name+".toggleCycling("+period+")' ";
-        html+="id='button_"+this.Name+"'>Start Loop</button>";
+
+        //var html="<button ";
+        //html+="onclick='javascript:"+this.Name+".toggleCycling("+period+")' ";
+        //html+="id='button_"+this.Name+"'>Start Loop</button>";
+
+        var html="<a class=loop_button ";
+        html+="href='javascript:"+this.Name+".toggleCycling("+period+")' ";
+        html+="id='button_"+this.Name+"'>Loop</a>";
 
         // Place html for the parameter table into the parameter's div
         var section=document.getElementById(target_div);
@@ -215,8 +220,8 @@ function Parameter(name,values,filenames){
     this.toggleCycling=function(period){
             // do we start or stop cycling?
             var button=document.getElementById("button_"+this.Name);
-            var startText="Start Loop";
-            var stopText="Stop Loop";
+            var startText="Loop";
+            var stopText="Stop";
             if(button.innerHTML==startText){
                     button.innerHTML=stopText;
             //if(button.getAttribute("class")=="play_button"){
@@ -352,13 +357,14 @@ function ProcessUserOptions(){
 }
 
 function ParamSelectValue(parameter,id){
+        //alert(parameter);
+        //alert(id);
         var section=document.getElementById(id);
         if(!section) {
                 alert("Unable to find div with ID:"+ id+ " in ParamSelectValue")
                         return;
         }
         var newVal=section.options[section.selectedIndex].value;
-        newVal=parameter.getIndexOfValue(newVal);
         parameter.changeValue(newVal);
 }
 
