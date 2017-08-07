@@ -1,4 +1,75 @@
 <!--
+////////////////////////////////////////////////////////////////////////////////////////////////
+// 
+// Updating InnerHTML class
+// 
+////////////////////////////////////////////////////////////////////////////////////////////////
+function InnerHTML(name,text_contents){
+// name (string): The name of the parameter which is used in html tag IDs.
+// text_contents (Array of strings and Parameters):
+//          A list used to build the innerHTML for the named tags.  Every
+//          Parameter in the list is replaced by the filename segment for it's
+//          current value and then all strings are concatanated in the order
+//          provided in this argument.
+    //---------------- Data members -----------------//
+    this.Name=name;
+    this.Dependencies=text_contents;
+    this.TagType=typeof tag_type!== 'undefined' ?tag_type:'h1';
+
+    //----------------- makeHtml method -----------------//
+    // Function to make the Html code for the image
+    this.makeHtml=function(tagType, cssClass){
+        //var html="<a id="+this.DownloadID+" target='_blank'>\n";
+        var html="<"+tagType;
+        if(cssClass) html+=" class='"+cssClass+"'";
+        html+=" id='"+this.Name+"'";
+        html+="</"+tagType+">";
+        return html;
+    }
+
+    //----------------- writeHtml method -----------------//
+    // Function to write the Html code for the image
+    this.writeHtml=function(tagType, cssClass, DivID){
+        var html=this.makeHtml(tagType, cssClass);
+
+        // Define the target for the parameter table.
+        // If DivID is supplied, use that, else use the parameter's name as the ID of the block.
+        var target_div=typeof DivID !=='undefined' ? DivID: this.Name;
+
+        // Place html for the parameter table into the parameter's div
+        var section=document.getElementById(target_div);
+        if(!section) {
+            alert("Unable to find div with ID:"+ target_div+ " in Image.writeHtml")
+                return;
+        }
+        section.innerHTML+=html;
+    }
+
+    //----------------- update method -----------------//
+    // Function to update the innerHtml of the block
+    this.update=function(ChangedParam){
+        // Check image depends on the parameter (to avoid downloading a new copy of the same image)
+        if(ChangedParam && this.Dependencies.indexOf(ChangedParam)==-1) return;
+
+        // Convert the dependency array to a string (uses the overriden toString
+        // method in the Parameter class)
+        var text=this.Dependencies.join("");
+
+        var section=document.getElementById(this.Name)
+            if(!section) {
+                //alert("Unable to find image html for image: "+ this.Name+
+                //"\rPerhaps you haven't called writeHtml on this image");
+                return;
+            }
+        section.innerHTML=text
+    }
+
+    //----------------- Register this element -----------------//
+    // Register with the controllable elements list so that it's informed when
+    // the parameters are changed
+    ControllableElements.addElement(this);
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 // 
@@ -275,7 +346,9 @@ function Parameter(name,values,filenames){
     //----------------- getIndexOfValue -----------------//
     //Helper function to produce the id for the requested cell in the parameter table
     this.getIndexOfValue=function(value){
-        return this.Filenames.indexOf(parseFloat(value));
+        var index= this.Filenames.indexOf(parseFloat(value));
+        if(index<0) index=this.Filenames.indexOf(value);
+        return index;
     }
 
     //----------------- Register this parameter -----------------//
