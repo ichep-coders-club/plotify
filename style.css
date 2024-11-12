@@ -1,133 +1,89 @@
-/*************************************************************
- *  Set up main structural divs for the page
- *  Largely taken from http://alistapart.com/article/holygrail
- *************************************************************/
 body {
-    min-width: 240px;      /* 2x LC width + RC width */
-    background-color:AliceBlue;
-    font-family:Arial, sans-serif;
+    font-family: "Century Gothic", "Gill Sans", Arial, sans-serif;
+    background-color: AliceBlue;
 }
+
 #container {
-    padding-left: 120px;   /* LC width */
-    padding-right: 0px;  /* RC width */
-    margin:0 auto;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
 }
-#container .column {
-    position: relative;
-    float: left;
+
+.column {
+    flex: 1;
 }
+
 #center {
-    width: 100%;
-    background-color:#FFFFFF;
+    background-color: #FFFFFF;
 }
-#center h1{
-    margin:3px;
-    margin-bottom:5px;
-    margin-left:20px;
-}
+
 #left {
-    width: 120px;          /* LC width */
-    right: 120px;          /* LC width */
-    margin-left: -100%;
-    background-color:CornflowerBlue;
-    /*background-color:#000000;*/
-    height:1700px;
+	flex: 1;
+    max-width: 15%;
+    background-color: CornflowerBlue;
+    padding: 10px;
 }
+
+#center {
+    flex: 4;  /* Make this column take up most of the remaining space */
+}
+
 #header {
-    clear: both;
-    background-color:AliceBlue;
+    background-color: CornflowerBlue;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    font-size: 24px;
 }
-#header h1{
-    display:inline-block;
-    font-size:30pt;
-}
+
 #footer {
-    clear: both;
-    background-color:AliceBlue;
+    background-color: AliceBlue;
+    text-align: right;
+    padding: 10px;
 }
-/*** IE6 Fix ***/
-* html #left {
-    left: 120px;           /* RC width */
+
+.plots {
+    width: 100%;
+    border-spacing: 15px;
 }
-/*************************************************************
- *  Block that contains the parameters floats in a fixed place 
- *  (would be an issue if the block becomes too big 
- *************************************************************/
-#parameter_block{
-    position: fixed;
-    width: 120px;          /* LC width */
-    margin-left: -120px;
-    padding:3px;
-    float:none;
+
+.plots td {
+    padding: 10px;
+    text-align: center;
 }
-/* Hack to get the sliding parameter block working with firefox*/
-@-moz-document url-prefix() {
-    #parameter_block{
-	margin-left: 0px;
-    }
+
+.plot {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
-/*************************************************************
- *  Styles to controll the parameter and value formats
- *************************************************************/
-#parameter_block h1{
-    font-size:14pt;
-    display:inline;
+
+.plots img.plot {
+    width: 100%;  /* Make images responsive to the width of their cells */
+    max-width: 450px;  /* Set a maximum width for the images */
+    height: auto;
 }
+
+.parameter h1 {
+    font-size: 16px;
+    margin-bottom: 5px;
+    color: DarkBlue;
+    font-weight: bold;
+}
+
+.parameter div {
+    font-size: 14px;
+    color: white;
+}
+
+#parameter_block {
+    padding: 10px;
+    background-color: #6495ED;
+    border-radius: 10px;
+    color: white;
+}
+
 .parameter {
-    color:#FFFFFF;
-    font-weight:normal;
-    font-size:12pt;
-}
-.parameter a.value{
-    text-decoration:none;
-    color:LightGray;
-    font-weight:normal;
-    font-size:12pt;
-}
-.parameter a.current_value{
-    text-decoration:none;
-    font-weight:bold;
-    color:#FFFFFF;
-    font-size:14pt;
-}
-.parameter h1{
-    font-size:14pt;
-    margin-bottom:0px;
-    color:DarkBlue;
-}
-table.value_table {
-    border-collapse:separate;
-    border-spacing:5px 0px;
-} 
-/*************************************************************
- *  Styles to the plot table and information
- *************************************************************/
-table.plots{
-    width: 1100px;
-    border-collapse:separate;
-    border-spacing:15px 10px;
-}
-table.plots td{
-    width: 300px;
-}
-img.plot{
-    width:100%;
-    height:auto;
-    max-width:360px;
-}
-#header_table {
-    border-collapse:separate;
-    border-spacing:50px 0px;
-} 
-#information{
-    font-size:11pt;
-}
-#information p{
-    margin:0px;
-}
-#information h1{
-    color:DarkBlue;
-    margin:0px;
-    margin-bottom:3px;
-    margin-top:9px;
+    margin-bottom: 20px;
 }
