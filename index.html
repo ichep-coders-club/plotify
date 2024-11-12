@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Differences in Geant4</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="config.js"></script>
+</head>
+
+<body>
+    <div id="header">
+        <h1>Plot Gallery</h1>
+    </div>
+    
+    <!-- Message below the title -->
+    <p id="subtitle-message">Select the parameters below to view the corresponding figures</p>
+       <p><b>Plot Details: </b>
+           Some information you want to provide 
+       </p>
+
+
+    <div id="container">
+        <div id="center" class="column">
+            <table class="plots">
+                <tbody id="plot_table">
+                    <!-- JavaScript will insert the rows here -->
+                </tbody>
+            </table>
+        </div>
+        <div id="left" class="column">
+            <div id="parameter_block">
+                <h1>Parameters</h1>
+                <!-- Parameter dropdowns will be created here dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <div id="footer">
+        Made using <a href="https://github.com/ic-coders-club/plotify">Plotify</a>.
+    </div>
+
+    <script>
+        // Generate the parameter dropdowns
+        const parameterBlock = document.getElementById("parameter_block");
+
+        parameters.forEach((param, paramIndex) => {
+            const paramDiv = document.createElement("div");
+            paramDiv.classList.add("parameter");
+            const label = document.createElement("h1");
+            label.innerText = param.name;
+            const select = document.createElement("select");
+            
+            // Populate the dropdown options
+            param.labels.forEach((label, index) => {
+                const option = document.createElement("option");
+                option.value = index;
+                option.text = label;
+                select.appendChild(option);
+            });
+
+            // Set the initial selected index
+            select.selectedIndex = param.selectedIndex;
+
+            // Update selectedIndex on change and reload images
+            select.addEventListener("change", (event) => {
+                param.selectedIndex = event.target.value;
+                loadImages();
+            });
+
+            paramDiv.appendChild(label);
+            paramDiv.appendChild(select);
+            parameterBlock.appendChild(paramDiv);
+        });
+
+        // Function to load images based on selected parameters
+        function loadImages() {
+            const plotTable = document.getElementById("plot_table");
+            let html = "<tr>";
+
+            for (let i = 0; i < image_name_list.length; i++) {
+                if (i > 0 && i % numColumns === 0) html += "</tr><tr>";
+                const imageName = image_name_list[i];
+                const imageUrl = generateImageFilename(imageName);
+                html += `
+                    <td>
+                        <h3>${imageName}</h3>
+                        <img class="plot" src="${imageUrl}" alt="${imageName}">
+                    </td>`;
+            }
+
+            html += "</tr>";
+            plotTable.innerHTML = html;
+        }
+
+        // Initial load of images
+        loadImages();
+    </script>
+</body>
+</html>
+
